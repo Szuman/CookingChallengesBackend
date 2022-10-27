@@ -29,4 +29,10 @@ class CommentDAOAdapter implements CommentDAO {
     public List<Comment> findByUser(User user) {
         return commentRepository.findCommentByCreator(user);
     }
+
+    @Override
+    public Long save(Comment comment) {
+        return commentRepository.save(comment).getId();
+    }
+
 }

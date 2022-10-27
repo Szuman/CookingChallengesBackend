@@ -21,4 +21,9 @@ class ContentDAOAdapter implements ContentDAO {
     public List<Content> findByTitle(String title) {
         return contentRepository.findContentByTitle(title);
     }
+
+    @Override
+    public Long save(Content content) {
+        return contentRepository.save(content).getId();
+    }
 }

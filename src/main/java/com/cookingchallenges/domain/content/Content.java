@@ -34,6 +34,14 @@ public class Content {
     @Column
     private String description;
 
+    Content(String title, Type type, User creator, String products, String description) {
+        this.title = title;
+        this.type = type;
+        this.creator = creator;
+        this.products = products;
+        this.description = description;
+    }
+
 //    @OneToMany(targetEntity = Seat.class, mappedBy = "content", cascade = CascadeType.ALL)
 //    private List<Seat> seats;
 //

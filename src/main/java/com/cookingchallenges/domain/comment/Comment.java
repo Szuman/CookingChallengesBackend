@@ -29,4 +29,10 @@ public class Comment {
     @JoinColumn(name = "content_id")
     private Content content;
 
+    Comment(String text, User creator, Content content) {
+        this.text = text;
+        this.creator = creator;
+        this.content = content;
+    }
+
 }

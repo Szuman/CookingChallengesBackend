@@ -10,4 +10,5 @@ public interface CommentDAO {
     List<Comment> findAll();
     List<Comment> findByContent(Content content);
     List<Comment> findByUser(User user);
+    Long save(Comment comment);
 }

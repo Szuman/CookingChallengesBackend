@@ -1,6 +1,8 @@
 package com.cookingchallenges.domain.comment;
 
 import com.cookingchallenges.domain.comment.dto.CommentDTO;
+import com.cookingchallenges.domain.comment.dto.EditComment;
+import com.cookingchallenges.domain.comment.dto.PostComment;
 import com.cookingchallenges.domain.content.Content;
 import com.cookingchallenges.domain.content.ContentDAO;
 import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
@@ -30,5 +32,19 @@ public class CommentFacade {
         User user = userDAO.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User (id=" + id +") does not exist"));
         return CommentMapper.map(commentDao.findByUser(user));
+    }
+
+    public Long postComment(PostComment postComment) {
+        Content content = contentDAO.findById(postComment.contentId()).orElseThrow(() ->
+                new ContentNotFoundException("Content (id=" + postComment.contentId() + ") does not exist"));
+        User user = userDAO.findById(postComment.userId()).orElseThrow(() ->
+                new UserNotFoundException("User (id=" + postComment.userId() +") does not exist"));
+        return commentDao.save(new Comment(postComment.text(), user, content));
+    }
+
+    public void editComment(EditComment editComment) {
+    }
+
+    public void deleteComment(Long id) {
     }
 }

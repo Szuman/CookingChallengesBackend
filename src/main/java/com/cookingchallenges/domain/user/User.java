@@ -27,4 +27,11 @@ public class User {
 
     @Column
     private String about;
+
+    User(String name, String email, String about) {
+        this.name = name;
+        this.email = email;
+        this.rank = Rank.BEGINNER;
+        this.about = about;
+    }
 }

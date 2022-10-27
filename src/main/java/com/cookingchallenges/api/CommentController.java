@@ -4,15 +4,19 @@ import com.cookingchallenges.domain.comment.Comment;
 import com.cookingchallenges.domain.comment.CommentDAO;
 import com.cookingchallenges.domain.comment.CommentFacade;
 import com.cookingchallenges.domain.comment.dto.CommentDTO;
+import com.cookingchallenges.domain.comment.dto.EditComment;
+import com.cookingchallenges.domain.comment.dto.PostComment;
 import com.cookingchallenges.domain.content.Content;
 import com.cookingchallenges.domain.content.ContentDAO;
 import com.cookingchallenges.domain.content.ContentFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,6 +34,28 @@ public class CommentController {
     @GetMapping("/user/{id}")
     List<CommentDTO> getCommentsByUser(@PathVariable Long id) {
         return commentFacade.findByUserId(id);
+    }
+
+    @PostMapping
+    ResponseEntity<Void> postComment(@Valid @RequestBody PostComment postComment) {
+        Long commentId = commentFacade.postComment(postComment);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(commentId).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("/{id}")
+    void putComment(@Valid @RequestBody EditComment editComment, @PathVariable Long id) {
+        commentFacade.editComment(editComment);
+        //        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(commentId).toUri();
+    }
+
+    @DeleteMapping("/{id}")
+    void deleteComment(@PathVariable Long id) {
+        commentFacade.deleteComment(id);
     }
 
 }
