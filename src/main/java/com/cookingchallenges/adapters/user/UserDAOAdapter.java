@@ -27,4 +27,9 @@ class UserDAOAdapter implements UserDAO {
     public Optional<User> findByName(String name) {
         return userRepository.findByName(name);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }

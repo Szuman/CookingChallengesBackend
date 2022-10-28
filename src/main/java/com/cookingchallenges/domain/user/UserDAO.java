@@ -10,4 +10,5 @@ public interface UserDAO {
     Long save(User user);
     Optional<User> findById(Long id);
     Optional<User> findByName(String name);
+    void deleteById(Long id);
 }

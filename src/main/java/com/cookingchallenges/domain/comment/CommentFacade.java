@@ -3,6 +3,7 @@ package com.cookingchallenges.domain.comment;
 import com.cookingchallenges.domain.comment.dto.CommentDTO;
 import com.cookingchallenges.domain.comment.dto.EditComment;
 import com.cookingchallenges.domain.comment.dto.PostComment;
+import com.cookingchallenges.domain.comment.exception.CommentNotFoundException;
 import com.cookingchallenges.domain.content.Content;
 import com.cookingchallenges.domain.content.ContentDAO;
 import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
@@ -13,6 +14,7 @@ import com.cookingchallenges.mappers.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -33,7 +35,7 @@ public class CommentFacade {
                 new UserNotFoundException("User (id=" + id +") does not exist"));
         return CommentMapper.map(commentDao.findByUser(user));
     }
-
+    @Transactional
     public Long postComment(PostComment postComment) {
         Content content = contentDAO.findById(postComment.contentId()).orElseThrow(() ->
                 new ContentNotFoundException("Content (id=" + postComment.contentId() + ") does not exist"));
@@ -42,9 +44,15 @@ public class CommentFacade {
         return commentDao.save(new Comment(postComment.text(), user, content));
     }
 
-    public void editComment(EditComment editComment) {
+    @Transactional
+    public Long editComment(EditComment editComment, Long id) {
+        Comment comment = commentDao.findById(id).orElseThrow(() ->
+                new CommentNotFoundException("Content (id=" + id + ") does not exist"));
+        comment.setText(editComment.text());
+        return commentDao.save(comment);
     }
 
     public void deleteComment(Long id) {
+        commentDao.deleteById(id);
     }
 }

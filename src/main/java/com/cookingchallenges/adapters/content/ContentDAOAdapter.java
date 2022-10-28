@@ -26,4 +26,9 @@ class ContentDAOAdapter implements ContentDAO {
     public Long save(Content content) {
         return contentRepository.save(content).getId();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        contentRepository.deleteById(id);
+    }
 }

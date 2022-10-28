@@ -10,6 +10,8 @@ import com.cookingchallenges.mappers.ContentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -30,6 +32,7 @@ public class ContentFacade {
         return ContentMapper.map(contents);
     }
 
+    @Transactional
     public Long postContent(PostContent postContent) {
         User user = userDAO.findById(postContent.userId()).orElseThrow(() ->
                 new ContentNotFoundException("User (id=" + postContent.userId() + ") does not exist"));
@@ -37,9 +40,17 @@ public class ContentFacade {
         return contentDao.save(new Content(postContent.title(), type, user, postContent.products(), postContent.description()));
     }
 
-    public void editContent(EditContent editContent) {
+    @Transactional
+    public Long editContent(EditContent editContent, Long id) {
+        Content content = contentDao.findById(id).orElseThrow(() ->
+                new ContentNotFoundException("Content (id=" + id + ") does not exist"));
+        content.setTitle(editContent.title());
+        content.setDescription(editContent.description());
+        content.setProducts(editContent.products());
+        return contentDao.save(content);
     }
 
     public void deleteContent(Long id) {
+        contentDao.deleteById(id);
     }
 }

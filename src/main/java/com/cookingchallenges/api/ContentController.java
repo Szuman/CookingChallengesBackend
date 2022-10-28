@@ -32,19 +32,20 @@ class ContentController {
 
     @PostMapping
     ResponseEntity<Void> postContent(@Valid @RequestBody PostContent postContent) {
-        Long ContentId = contentFacade.postContent(postContent);
+        Long contentId = contentFacade.postContent(postContent);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(ContentId).toUri();
+                .buildAndExpand(contentId).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
-    void putContent(@Valid @RequestBody EditContent editContent, @PathVariable Long id) {
-        contentFacade.editContent(editContent);
-        //        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(ContentId).toUri();
+    ResponseEntity<Void> putContent(@Valid @RequestBody EditContent editContent, @PathVariable Long id) {
+        Long contentId = contentFacade.editContent(editContent, id);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(contentId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping("/{id}")

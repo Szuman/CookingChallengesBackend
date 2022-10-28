@@ -6,10 +6,12 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+//@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

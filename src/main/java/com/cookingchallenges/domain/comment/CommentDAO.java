@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface CommentDAO {
     List<Comment> findAll();
+    Optional<Comment> findById(Long id);
     List<Comment> findByContent(Content content);
     List<Comment> findByUser(User user);
     Long save(Comment comment);
+    void deleteById(Long id);
 }

@@ -21,6 +21,11 @@ class CommentDAOAdapter implements CommentDAO {
     }
 
     @Override
+    public Optional<Comment> findById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Comment> findByContent(Content content) {
         return commentRepository.findCommentsByContent(content);
     }
@@ -33,6 +38,11 @@ class CommentDAOAdapter implements CommentDAO {
     @Override
     public Long save(Comment comment) {
         return commentRepository.save(comment).getId();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        commentRepository.deleteById(id);
     }
 
 }

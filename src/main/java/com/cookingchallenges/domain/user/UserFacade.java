@@ -8,6 +8,8 @@ import com.cookingchallenges.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class UserFacade {
@@ -26,13 +28,23 @@ public class UserFacade {
         return UserMapper.map(user);
     }
 
+    @Transactional
     public Long postUser(PostUser postUser) {
         return userDao.save(new User(postUser.name(), postUser.email(), postUser.about()));
     }
 
-    public void editUser(EditUser editUser) {
+    @Transactional
+    public Long editUser(EditUser editUser, Long id) {
+        User user = userDao.findById(id).orElseThrow(() ->
+                new UserNotFoundException("User (id=" + id +") does not exist"));
+        user.setName(editUser.name());
+        user.setEmail(editUser.email());
+        user.setAbout(editUser.about());
+        return userDao.save(user);
     }
+
     public void deleteUser(Long id) {
+        userDao.deleteById(id);
     }
 
     public void changeUsersRank(Long id, String rank) {

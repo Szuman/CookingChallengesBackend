@@ -46,11 +46,12 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    void putComment(@Valid @RequestBody EditComment editComment, @PathVariable Long id) {
-        commentFacade.editComment(editComment);
-        //        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(commentId).toUri();
+    ResponseEntity<Void> putComment(@Valid @RequestBody EditComment editComment, @PathVariable Long id) {
+        Long commentId = commentFacade.editComment(editComment, id);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(commentId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping("/{id}")

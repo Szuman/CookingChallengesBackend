@@ -38,11 +38,12 @@ class UserController {
     }
 
     @PutMapping("/{id}")
-    void putUser(@Valid @RequestBody EditUser editUser, @PathVariable Long id) {
-        userFacade.editUser(editUser);
-        //        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(UserId).toUri();
+    ResponseEntity<Void>  putUser(@Valid @RequestBody EditUser editUser, @PathVariable Long id) {
+        Long UserId = userFacade.editUser(editUser, id);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(UserId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     //TODO: @param - only possible ranks
