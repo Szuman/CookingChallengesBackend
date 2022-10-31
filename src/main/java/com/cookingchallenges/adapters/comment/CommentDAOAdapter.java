@@ -45,4 +45,14 @@ class CommentDAOAdapter implements CommentDAO {
         commentRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteByCreator(User creator) {
+        commentRepository.deleteAllByCreator(creator);
+    }
+
+    @Override
+    public void deleteByContent(Content content) {
+        commentRepository.deleteAllByContent(content);
+    }
+
 }

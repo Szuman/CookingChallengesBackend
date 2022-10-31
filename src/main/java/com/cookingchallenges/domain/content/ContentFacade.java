@@ -1,5 +1,6 @@
 package com.cookingchallenges.domain.content;
 
+import com.cookingchallenges.domain.comment.CommentDAO;
 import com.cookingchallenges.domain.content.dto.ContentDTO;
 import com.cookingchallenges.domain.content.dto.EditContent;
 import com.cookingchallenges.domain.content.dto.PostContent;
@@ -20,6 +21,7 @@ public class ContentFacade {
 
     private final ContentDAO contentDao;
     private final UserDAO userDAO;
+    private final CommentDAO commentDAO;
 
     public ContentDTO getContentById(Long id) {
         Content content = contentDao.findById(id).orElseThrow(() ->
@@ -51,6 +53,15 @@ public class ContentFacade {
     }
 
     public void deleteContent(Long id) {
+        Content content = contentDao.findById(id).orElseThrow(() ->
+                new ContentNotFoundException("Content (id=" + id + ") does not exist"));
+        commentDAO.deleteByContent(content);
         contentDao.deleteById(id);
+    }
+
+    public List<ContentDTO> getContentByUserId(Long id) {
+        User user = userDAO.findById(id).orElseThrow(() ->
+                new ContentNotFoundException("User (id=" + id + ") does not exist"));
+        return ContentMapper.map(contentDao.findByCreator(user));
     }
 }

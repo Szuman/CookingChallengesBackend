@@ -47,12 +47,18 @@ public class CommentFacade {
     @Transactional
     public Long editComment(EditComment editComment, Long id) {
         Comment comment = commentDao.findById(id).orElseThrow(() ->
-                new CommentNotFoundException("Content (id=" + id + ") does not exist"));
+                new CommentNotFoundException("Comment (id=" + id + ") does not exist"));
         comment.setText(editComment.text());
         return commentDao.save(comment);
     }
 
     public void deleteComment(Long id) {
         commentDao.deleteById(id);
+    }
+
+    public CommentDTO findById(Long id) {
+        Comment comment = commentDao.findById(id).orElseThrow(() ->
+                new CommentNotFoundException("Comment (id=" + id + ") does not exist"));
+        return CommentMapper.map(comment);
     }
 }

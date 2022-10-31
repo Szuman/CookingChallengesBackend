@@ -13,4 +13,6 @@ public interface CommentDAO {
     List<Comment> findByUser(User user);
     Long save(Comment comment);
     void deleteById(Long id);
+    void deleteByCreator(User creator);
+    void deleteByContent(Content content);
 }

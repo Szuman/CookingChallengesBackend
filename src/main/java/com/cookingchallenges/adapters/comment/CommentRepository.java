@@ -14,5 +14,6 @@ interface CommentRepository extends CrudRepository<Comment, Long> {
     List<Comment> findAll();
     List<Comment> findCommentByCreator(User creator);
     List<Comment> findCommentsByContent(Content content);
-
+    void deleteAllByCreator(User creator);
+    void deleteAllByContent(Content content);
 }

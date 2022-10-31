@@ -3,6 +3,8 @@ package com.cookingchallenges.exception;
 import com.cookingchallenges.domain.comment.exception.CommentNotFoundException;
 import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
 import com.cookingchallenges.domain.user.exception.UserNotFoundException;
+import org.springframework.core.convert.ConversionException;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,4 +49,10 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
+
+    @ExceptionHandler(ConversionFailedException.class)
+    ResponseEntity<String> handleConversionFailedException(ConversionFailedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

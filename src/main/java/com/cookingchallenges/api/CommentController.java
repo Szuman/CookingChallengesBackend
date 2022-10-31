@@ -36,6 +36,11 @@ public class CommentController {
         return commentFacade.findByUserId(id);
     }
 
+    @GetMapping("/{id}")
+    CommentDTO getCommentById(@PathVariable Long id) {
+        return commentFacade.findById(id);
+    }
+
     @PostMapping
     ResponseEntity<Void> postComment(@Valid @RequestBody PostComment postComment) {
         Long commentId = commentFacade.postComment(postComment);

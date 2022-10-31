@@ -30,6 +30,11 @@ class ContentController {
         return contentFacade.getContentByName(title);
     }
 
+    @GetMapping("/user/{id}")
+    List<ContentDTO> getContentByUserId(@PathVariable Long id) {
+        return contentFacade.getContentByUserId(id);
+    }
+
     @PostMapping
     ResponseEntity<Void> postContent(@Valid @RequestBody PostContent postContent) {
         Long contentId = contentFacade.postContent(postContent);

@@ -2,6 +2,7 @@ package com.cookingchallenges.adapters.content;
 
 import com.cookingchallenges.domain.content.Content;
 import com.cookingchallenges.domain.content.ContentDAO;
+import com.cookingchallenges.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,4 +32,15 @@ class ContentDAOAdapter implements ContentDAO {
     public void deleteById(Long id) {
         contentRepository.deleteById(id);
     }
+
+    @Override
+    public List<Content> findByCreator(User creator) {
+        return contentRepository.findByCreator(creator);
+    }
+
+    @Override
+    public void deleteByUser(User creator) {
+        contentRepository.deleteAllByCreator(creator);
+    }
+
 }
