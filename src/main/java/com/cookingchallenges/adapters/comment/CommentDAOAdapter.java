@@ -22,7 +22,7 @@ class CommentDAOAdapter implements CommentDAO {
 
     @Override
     public Optional<Comment> findById(Long id) {
-        return Optional.empty();
+        return commentRepository.findById(id);
     }
 
     @Override

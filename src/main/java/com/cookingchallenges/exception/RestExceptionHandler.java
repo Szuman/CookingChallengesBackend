@@ -46,13 +46,14 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+    @ExceptionHandler(ConversionFailedException.class)
+    ResponseEntity<Object> handleConversionFailedException(ConversionFailedException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(ConversionFailedException.class)
-    ResponseEntity<String> handleConversionFailedException(ConversionFailedException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
 }
