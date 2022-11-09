@@ -11,6 +11,7 @@ import com.cookingchallenges.domain.content.ContentDAO;
 import com.cookingchallenges.domain.content.ContentFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -51,12 +52,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> putComment(@Valid @RequestBody EditComment editComment, @PathVariable Long id) {
-        Long commentId = commentFacade.editComment(editComment, id);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(commentId).toUri();
-        return ResponseEntity.created(location).build();
+    ResponseEntity<CommentDTO> putComment(@Valid @RequestBody EditComment editComment, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentFacade.editComment(editComment, id));
     }
 
     @DeleteMapping("/{id}")

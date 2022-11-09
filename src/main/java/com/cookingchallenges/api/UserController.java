@@ -8,6 +8,7 @@ import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,17 +43,13 @@ class UserController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void>  putUser(@Valid @RequestBody EditUser editUser, @PathVariable Long id) {
-        Long UserId = userFacade.editUser(editUser, id);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(UserId).toUri();
-        return ResponseEntity.created(location).build();
+    ResponseEntity<UserDTO> putUser(@Valid @RequestBody EditUser editUser, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.editUser(editUser, id));
     }
 
     @PutMapping("/rank/{id}")
-    void putUserRank(@PathVariable Long id, @RequestParam(value = "rank") Rank rank) {
-        userFacade.changeUsersRank(id, rank);
+    ResponseEntity<UserDTO> putUserRank(@PathVariable Long id, @RequestParam(value = "rank") Rank rank) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.changeUsersRank(id, rank));
     }
 
     @DeleteMapping("/{id}")

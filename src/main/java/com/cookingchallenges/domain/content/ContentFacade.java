@@ -43,15 +43,17 @@ public class ContentFacade {
     }
 
     @Transactional
-    public Long editContent(EditContent editContent, Long id) {
+    public ContentDTO editContent(EditContent editContent, Long id) {
         Content content = contentDao.findById(id).orElseThrow(() ->
                 new ContentNotFoundException("Content (id=" + id + ") does not exist"));
         content.setTitle(editContent.title());
         content.setDescription(editContent.description());
         content.setProducts(editContent.products());
-        return contentDao.save(content);
+        contentDao.save(content);
+        return getContentById(id);
     }
 
+    @Transactional
     public void deleteContent(Long id) {
         Content content = contentDao.findById(id).orElseThrow(() ->
                 new ContentNotFoundException("Content (id=" + id + ") does not exist"));

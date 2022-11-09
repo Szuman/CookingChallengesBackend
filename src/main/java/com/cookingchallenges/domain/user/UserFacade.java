@@ -41,15 +41,17 @@ public class UserFacade {
     }
 
     @Transactional
-    public Long editUser(EditUser editUser, Long id) {
+    public UserDTO editUser(EditUser editUser, Long id) {
         User user = userDao.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User (id=" + id +") does not exist"));
         user.setName(editUser.name());
         user.setEmail(editUser.email());
         user.setAbout(editUser.about());
-        return userDao.save(user);
+        userDao.save(user);
+        return getUserById(id);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = userDao.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User (id=" + id +") does not exist"));
@@ -58,10 +60,11 @@ public class UserFacade {
         userDao.deleteById(id);
     }
 
-    public void changeUsersRank(Long id, Rank rank) {
+    public UserDTO changeUsersRank(Long id, Rank rank) {
         User user = userDao.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User (id=" + id +") does not exist"));
         user.setRank(rank);
         userDao.save(user);
+        return getUserById(id);
     }
 }

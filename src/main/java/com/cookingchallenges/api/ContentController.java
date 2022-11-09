@@ -5,6 +5,7 @@ import com.cookingchallenges.domain.content.dto.ContentDTO;
 import com.cookingchallenges.domain.content.dto.EditContent;
 import com.cookingchallenges.domain.content.dto.PostContent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,12 +46,8 @@ class ContentController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> putContent(@Valid @RequestBody EditContent editContent, @PathVariable Long id) {
-        Long contentId = contentFacade.editContent(editContent, id);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(contentId).toUri();
-        return ResponseEntity.created(location).build();
+    ResponseEntity<ContentDTO> putContent(@Valid @RequestBody EditContent editContent, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(contentFacade.editContent(editContent, id));
     }
 
     @DeleteMapping("/{id}")
