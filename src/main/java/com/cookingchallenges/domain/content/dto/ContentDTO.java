@@ -6,5 +6,5 @@ import lombok.Value;
 
 import java.util.List;
 
-public record ContentDTO(Long id, String title, String type, UserDTO user, String description, String products) {
+public record ContentDTO(Long id, String title, String type, UserDTO user, String description, List<String> products) {
 }

@@ -5,6 +5,7 @@ import com.cookingchallenges.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,13 +30,14 @@ public class Content {
     @JoinColumn(name = "creator_id")
     private User creator;
 
-    @Column
-    private String products;
+    @ElementCollection
+    @Column(name = "products")
+    private List<String> products;
 
     @Column
     private String description;
 
-    Content(String title, Type type, User creator, String products, String description) {
+    Content(String title, Type type, User creator, List<String> products, String description) {
         this.title = title;
         this.type = type;
         this.creator = creator;
