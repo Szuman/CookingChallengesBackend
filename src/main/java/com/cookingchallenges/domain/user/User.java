@@ -24,6 +24,9 @@ public class User {
     @Column(nullable = false, length=50, unique = true)
     private String email;
 
+//    @Column(nullable = false, length=256, unique = true)
+//    private String password;
+
     @Column
     @Enumerated(EnumType.STRING)
     private Rank rank;
@@ -31,15 +34,9 @@ public class User {
     @Column
     private String about;
 
-//    @Column(nullable = false, length=40)
-//    private String password;
-
     // TODO
 //    @Column
 //    private boolean locked;
-//
-//    @Column
-//    private boolean enabled;
 
     User(String name, String email, String about) {
         this.name = name;
