@@ -33,7 +33,7 @@ class UserController {
         return userFacade.getUserByName(name);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     ResponseEntity<Void> postUser(@Valid @RequestBody PostUser postUser) {
         Long UserId = userFacade.postUser(postUser);
         URI location = ServletUriComponentsBuilder
@@ -56,16 +56,5 @@ class UserController {
     void deleteUser(@PathVariable Long id) {
         userFacade.deleteUser(id);
     }
-
-    //------------------------------------------------------------------------------------------
-
-//    @PostMapping
-//    ResponseEntity<Void> makeBooking(@Valid @RequestBody MakeBooking makeBooking) {
-//        Long bookingId = userFacade.makeBooking(makeBooking);
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(bookingId).toUri();
-//        return ResponseEntity.created(location).build();
-//    }
 
 }
