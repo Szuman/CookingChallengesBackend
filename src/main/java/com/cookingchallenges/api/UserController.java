@@ -5,6 +5,7 @@ import com.cookingchallenges.domain.user.UserFacade;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
+import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,11 @@ class UserController {
     @GetMapping
     UserDTO getUserByName(@RequestParam String name) {
         return userFacade.getUserByName(name);
+    }
+
+    @GetMapping("/pass/{id}")
+    UserWithPassDTO getUserWithPass(@PathVariable Long id) {
+        return userFacade.getUserWithPass(id);
     }
 
     @PostMapping("/register")

@@ -5,6 +5,7 @@ import com.cookingchallenges.domain.content.ContentDAO;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
+import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
 import com.cookingchallenges.domain.user.exception.UserNotFoundException;
 import com.cookingchallenges.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -82,5 +83,11 @@ public class UserFacade implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userDao.findByEmail(email).orElseThrow(() ->
                 new UserNotFoundException("User (email=" + email +") does not exist"));
+    }
+
+    public UserWithPassDTO getUserWithPass(Long id) {
+        User user = userDao.findById(id).orElseThrow(() ->
+                new UserNotFoundException("User (id=" + id +") does not exist"));
+        return UserMapper.mapPass(user);
     }
 }
