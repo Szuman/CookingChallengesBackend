@@ -1,8 +1,6 @@
 package com.cookingchallenges.api;
 
-import com.cookingchallenges.domain.comment.Comment;
-import com.cookingchallenges.domain.comment.CommentDAO;
-import com.cookingchallenges.domain.user.Rank;
+import com.cookingchallenges.domain.user.Grade;
 import com.cookingchallenges.domain.user.UserFacade;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.PostUser;
@@ -15,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,8 +45,8 @@ class UserController {
     }
 
     @PutMapping("/rank/{id}")
-    ResponseEntity<UserDTO> putUserRank(@PathVariable Long id, @RequestParam(value = "rank") Rank rank) {
-        return ResponseEntity.status(HttpStatus.OK).body(userFacade.changeUsersRank(id, rank));
+    ResponseEntity<UserDTO> putUserRank(@PathVariable Long id, @RequestParam(value = "grade") Grade grade) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.changeUsersRank(id, grade));
     }
 
     @DeleteMapping("/{id}")

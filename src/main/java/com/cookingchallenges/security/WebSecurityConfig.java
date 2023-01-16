@@ -27,15 +27,16 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserFacade userFacade;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userFacade);
-        return provider;
-    }
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+//    @Bean
+//    public DaoAuthenticationProvider daoAuthenticationProvider(){
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(bCryptPasswordEncoder);
+//        provider.setUserDetailsService(userFacade);
+//        return provider;
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,8 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests().antMatchers("/user/login").permitAll()
+//                .and()
+//                .authorizeRequests().antMatchers("/user/register/**").permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/user/register/**").permitAll()
+                .authorizeRequests().antMatchers("/user/**").permitAll()
 //                .and()
 //                .authorizeRequests().antMatchers("/user/password/**").permitAll()
                 .and()
@@ -68,15 +71,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(daoAuthenticationProvider());
+//    }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 }
 

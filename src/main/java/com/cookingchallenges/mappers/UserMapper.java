@@ -13,7 +13,7 @@ public class UserMapper {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getRank().toString(),
+                user.getGrade().toString(),
                 user.getAbout()
         );
     }

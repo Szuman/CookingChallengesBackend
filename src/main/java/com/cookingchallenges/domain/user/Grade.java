@@ -1,5 +1,5 @@
 package com.cookingchallenges.domain.user;
 
-public enum Rank {
+public enum Grade {
     BEGINNER, NOVICE, EXPERT, PRO, CHEF, MASTERCHEF, FAMOUS;
 }
