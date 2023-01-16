@@ -41,6 +41,7 @@ public class UserFacade implements UserDetailsService {
     public Long postUser(PostUser postUser) {
         User user = new User(postUser.name(), postUser.email(), postUser.about());
         user.setPassword(passwordEncoder.encode(postUser.password()));
+//        user.setPassword(postUser.password());
         return userDao.save(user);
     }
 
@@ -64,10 +65,10 @@ public class UserFacade implements UserDetailsService {
         userDao.deleteById(id);
     }
 
-    public UserDTO changeUsersRank(Long id, Rank rank) {
+    public UserDTO changeUsersRank(Long id, Grade grade) {
         User user = userDao.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User (id=" + id +") does not exist"));
-        user.setRank(rank);
+        user.setGrade(grade);
         userDao.save(user);
         return getUserById(id);
     }

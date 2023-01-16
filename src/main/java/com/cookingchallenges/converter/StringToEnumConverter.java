@@ -1,12 +1,12 @@
 package com.cookingchallenges.converter;
 
-import com.cookingchallenges.domain.user.Rank;
+import com.cookingchallenges.domain.user.Grade;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToEnumConverter implements Converter<String, Rank> {
+public class StringToEnumConverter implements Converter<String, Grade> {
     @Override
-    public Rank convert(String source) {
-        return Rank.valueOf(source.toUpperCase());
+    public Grade convert(String source) {
+        return Grade.valueOf(source.toUpperCase());
     }
 
 }

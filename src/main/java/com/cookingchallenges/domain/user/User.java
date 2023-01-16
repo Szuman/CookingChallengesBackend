@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -30,21 +29,17 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(columnDefinition = "enum ('BEGINNER', 'NOVICE', 'EXPERT', 'PRO', 'CHEF', 'MASTERCHEF', 'FAMOUS')")
     @Enumerated(EnumType.STRING)
-    private Rank rank;
+    private Grade grade;
 
     @Column
     private String about;
 
-    // TODO
-//    @Column
-//    private boolean locked;
-
     User(String name, String email, String about) {
         this.name = name;
         this.email = email;
-        this.rank = Rank.BEGINNER;
+        this.grade = Grade.BEGINNER;
         this.about = about;
     }
 
