@@ -2,6 +2,7 @@ package com.cookingchallenges.security;
 
 import com.cookingchallenges.domain.user.UserFacade;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,27 +20,30 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserFacade userFacade;
+    private final UserFacade userFacade;
 
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider(){
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(bCryptPasswordEncoder);
-//        provider.setUserDetailsService(userFacade);
-//        return provider;
-//    }
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(bCryptPasswordEncoder);
+        provider.setUserDetailsService(userFacade);
+        return provider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
+        authenticationFilter.setFilterProcessesUrl("/user/login");
         AuthorizationFilter authorizationFilter = new AuthorizationFilter(userFacade);
 
         http
@@ -59,27 +63,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().authenticated();
 
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(authenticationFilter);
+
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.applyPermitDefaultValues();
+//        configuration.setAllowedOrigins(List.of("http://localhost:3000/**"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenticationProvider());
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }
 
