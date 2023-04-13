@@ -1,7 +1,6 @@
 package com.cookingchallenges.security;
 
 import com.cookingchallenges.domain.user.UserFacade;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +19,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -40,27 +38,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+//    private static final String[] SWAGGER_WHITELIST = {
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**",
+//            "/swagger-ui.html",
+//    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
-        authenticationFilter.setFilterProcessesUrl("/user/login");
+        authenticationFilter.setFilterProcessesUrl("/auth/login");
         AuthorizationFilter authorizationFilter = new AuthorizationFilter(userFacade);
-
-        http
-                .cors()
-                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests().antMatchers("/user/login").permitAll()
+//        http
+//                .cors()
 //                .and()
-//                .authorizeRequests().antMatchers("/user/register/**").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/user/**").permitAll()
+//                .authorizeRequests()
+//                .antMatchers(SWAGGER_WHITELIST).permitAll()
+//                .anyRequest().authenticated()
 //                .and()
-//                .authorizeRequests().antMatchers("/user/password/**").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated();
+//                .httpBasic();
+//        http
+//                .cors()
+//                .and()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+////                .and()
+////                .authorizeRequests().antMatchers("/user/register/**").permitAll()
+//                .and()
+//                .authorizeRequests().antMatchers("/user/**").permitAll()
+////                .and()
+////                .authorizeRequests().antMatchers("/user/password/**").permitAll()
+//                .and()
+//                .authorizeRequests().anyRequest().authenticated();
 
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilter(authenticationFilter);
@@ -71,7 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.applyPermitDefaultValues();
-//        configuration.setAllowedOrigins(List.of("http://localhost:3000/**"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -79,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

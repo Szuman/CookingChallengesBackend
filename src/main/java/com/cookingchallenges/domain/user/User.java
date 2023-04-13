@@ -14,7 +14,6 @@ import java.util.Collection;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-//@Data
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +28,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "enum ('BEGINNER', 'NOVICE', 'EXPERT', 'PRO', 'CHEF', 'MASTERCHEF', 'FAMOUS')")
+    @Column(columnDefinition = "enum ('BEGINNER', 'NOVICE', 'EXPERT', 'PRO', 'CHEF', 'MASTERCHEF', 'FAMOUS', 'ADMIN')")
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
