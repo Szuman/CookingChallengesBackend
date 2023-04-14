@@ -30,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final AuthenticationEntryPointJwt unauthorizedHandler;
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -38,42 +40,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-//    private static final String[] SWAGGER_WHITELIST = {
-//            "/v3/api-docs/**",
-//            "/swagger-ui/**",
-//            "/swagger-ui.html",
-//    };
+    private static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
+
+    @Bean
+    public AuthenticationFilter authenticationJwtTokenFilter() {
+        return new AuthenticationFilter(userFacade);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
-        authenticationFilter.setFilterProcessesUrl("/auth/login");
-        AuthorizationFilter authorizationFilter = new AuthorizationFilter(userFacade);
-//        http
-//                .cors()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(SWAGGER_WHITELIST).permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .httpBasic();
-//        http
-//                .cors()
-//                .and()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-////                .and()
-////                .authorizeRequests().antMatchers("/user/register/**").permitAll()
-//                .and()
-//                .authorizeRequests().antMatchers("/user/**").permitAll()
-////                .and()
-////                .authorizeRequests().antMatchers("/user/password/**").permitAll()
-//                .and()
-//                .authorizeRequests().anyRequest().authenticated();
+//        AuthenticationFilter authenticationJwtTokenFilter = new AuthenticationFilter(userFacade);
+        http
+                .cors()
+                .and()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests().antMatchers(SWAGGER_WHITELIST).permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/auth/**").permitAll()
+                .and()
+                .authorizeRequests().anyRequest().authenticated();
 
-        http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilter(authenticationFilter);
-
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
