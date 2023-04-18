@@ -1,7 +1,7 @@
 package com.cookingchallenges.api;
 
 import com.cookingchallenges.domain.user.User;
-import com.cookingchallenges.domain.user.UserFacade;
+import com.cookingchallenges.domain.user.UserApiFacade;
 import com.cookingchallenges.domain.user.dto.LoginRequest;
 import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.SignupResponse;
@@ -33,7 +33,7 @@ class AuthorizationController {
 
     private final JwtUtils jwtUtils;
 
-    private final UserFacade userFacade;
+    private final UserApiFacade userFacade;
 
     @Operation(summary = "Register", description = "Register new user")
     @ApiResponses(value = {

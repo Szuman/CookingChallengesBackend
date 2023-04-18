@@ -1,6 +1,6 @@
 package com.cookingchallenges.security;
 
-import com.cookingchallenges.domain.user.UserFacade;
+import com.cookingchallenges.domain.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserFacade userFacade;
+    private final UserDetailsServiceImpl userDetailsService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userFacade);
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationFilter authenticationJwtTokenFilter() {
-        return new AuthenticationFilter(userFacade);
+        return new AuthenticationFilter(userDetailsService);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.cookingchallenges.api;
 
-import com.cookingchallenges.domain.comment.CommentFacade;
+import com.cookingchallenges.domain.comment.CommentApiFacade;
 import com.cookingchallenges.domain.comment.dto.CommentDTO;
 import com.cookingchallenges.domain.comment.dto.EditComment;
 import com.cookingchallenges.domain.comment.dto.PostComment;
@@ -21,9 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("comments")
-public class CommentController {
+class CommentController {
 
-    private final CommentFacade commentFacade;
+    private final CommentApiFacade commentFacade;
 
     @Operation(summary = "Get comment by content", description = "Get comment by contents id")
     @SecurityRequirement(name = "Bearer Authentication")

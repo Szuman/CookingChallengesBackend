@@ -1,15 +1,10 @@
 package com.cookingchallenges.api;
 
-import com.cookingchallenges.domain.comment.exception.CommentNotFoundException;
-import com.cookingchallenges.domain.content.ContentFacade;
+import com.cookingchallenges.domain.content.ContentApiFacade;
 import com.cookingchallenges.domain.content.dto.ContentDTO;
 import com.cookingchallenges.domain.content.dto.EditContent;
 import com.cookingchallenges.domain.content.dto.PostContent;
-import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
-import com.cookingchallenges.domain.user.exception.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,7 +23,7 @@ import java.util.List;
 @RequestMapping("content")
 class ContentController {
 
-    private final ContentFacade contentFacade;
+    private final ContentApiFacade contentFacade;
 
     @Operation(summary = "Get content by id", description = "Get content by id")
     @ApiResponses(value = {

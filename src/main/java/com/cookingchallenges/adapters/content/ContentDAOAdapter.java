@@ -39,7 +39,7 @@ class ContentDAOAdapter implements ContentDAO {
     }
 
     @Override
-    public void deleteByUser(User creator) {
+    public void deleteAllByUser(User creator) {
         contentRepository.deleteAllByCreator(creator);
     }
 

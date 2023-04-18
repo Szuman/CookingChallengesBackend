@@ -14,10 +14,10 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${codeusingjava.jwtSecret}")
-    private String jwtSecret = "jwtSecret";
+    private String jwtSecret;
 
     @Value("${codeusingjava.jwtExpirationMs}")
-    private int jwtExpirationMs = 36000;
+    private int jwtExpirationMs;
 
     public String generateJwtToken(User userPrincipal) {
         return generateTokenFromUsername(userPrincipal.getEmail());

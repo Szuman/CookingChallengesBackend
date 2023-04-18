@@ -16,11 +16,6 @@ class CommentDAOAdapter implements CommentDAO {
     private final CommentRepository commentRepository;
 
     @Override
-    public List<Comment> findAll() {
-        return commentRepository.findAll();
-    }
-
-    @Override
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
@@ -46,12 +41,12 @@ class CommentDAOAdapter implements CommentDAO {
     }
 
     @Override
-    public void deleteByCreator(User creator) {
+    public void deleteAllByCreator(User creator) {
         commentRepository.deleteAllByCreator(creator);
     }
 
     @Override
-    public void deleteByContent(Content content) {
+    public void deleteAllByContent(Content content) {
         commentRepository.deleteAllByContent(content);
     }
 

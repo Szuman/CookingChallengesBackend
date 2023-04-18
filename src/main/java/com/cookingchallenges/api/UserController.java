@@ -1,7 +1,7 @@
 package com.cookingchallenges.api;
 
 import com.cookingchallenges.domain.user.Grade;
-import com.cookingchallenges.domain.user.UserFacade;
+import com.cookingchallenges.domain.user.UserApiFacade;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
 import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @RequestMapping("user")
 class UserController {
 
-    private final UserFacade userFacade;
+    private final UserApiFacade userFacade;
 
     @Operation(summary = "Get user", description = "Get user by id")
     @SecurityRequirement(name = "Bearer Authentication")

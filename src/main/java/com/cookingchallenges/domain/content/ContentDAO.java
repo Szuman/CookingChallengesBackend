@@ -11,5 +11,5 @@ public interface ContentDAO {
     Long save(Content content);
     void deleteById(Long id);
     List<Content> findByCreator(User creator);
-    void deleteByUser(User creator);
+    void deleteAllByUser(User creator);
 }
