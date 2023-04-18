@@ -6,6 +6,8 @@ import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
 import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,10 +59,15 @@ class UserController {
     }
 
     @Operation(summary = "Delete user", description = "Delete user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
-    void deleteUser(@PathVariable Long id) {
+    ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userFacade.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

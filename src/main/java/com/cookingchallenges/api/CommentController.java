@@ -5,6 +5,8 @@ import com.cookingchallenges.domain.comment.dto.CommentDTO;
 import com.cookingchallenges.domain.comment.dto.EditComment;
 import com.cookingchallenges.domain.comment.dto.PostComment;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +47,9 @@ public class CommentController {
     }
 
     @Operation(summary = "Post comment", description = "Post new comment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     ResponseEntity<Void> postComment(@Valid @RequestBody PostComment postComment) {
@@ -63,10 +68,15 @@ public class CommentController {
     }
 
     @Operation(summary = "Delete comment", description = "Delete comment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
-    void deleteComment(@PathVariable Long id) {
+    ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         commentFacade.deleteComment(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

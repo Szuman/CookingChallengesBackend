@@ -29,8 +29,8 @@ public class ContentFacade {
         return ContentMapper.map(content);
     }
 
-    public List<ContentDTO> getContentByName(String name) {
-        List<Content> contents = contentDao.findByTitle(name);
+    public List<ContentDTO> getContentByTitle(String title) {
+        List<Content> contents = contentDao.findByTitle(title);
         return ContentMapper.map(contents);
     }
 

@@ -7,6 +7,8 @@ import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.SignupResponse;
 import com.cookingchallenges.security.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,9 @@ class AuthorizationController {
     private final UserFacade userFacade;
 
     @Operation(summary = "Register", description = "Register new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created")
+    })
     @PostMapping("/register")
     ResponseEntity<Void> postUser(@Valid @RequestBody PostUser postUser) {
         Long UserId = userFacade.postUser(postUser);

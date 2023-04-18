@@ -1,10 +1,17 @@
 package com.cookingchallenges.api;
 
+import com.cookingchallenges.domain.comment.exception.CommentNotFoundException;
 import com.cookingchallenges.domain.content.ContentFacade;
 import com.cookingchallenges.domain.content.dto.ContentDTO;
 import com.cookingchallenges.domain.content.dto.EditContent;
 import com.cookingchallenges.domain.content.dto.PostContent;
+import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
+import com.cookingchallenges.domain.user.exception.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +31,10 @@ class ContentController {
     private final ContentFacade contentFacade;
 
     @Operation(summary = "Get content by id", description = "Get content by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     ContentDTO getContentById(@PathVariable Long id) {
@@ -31,13 +42,21 @@ class ContentController {
     }
 
     @Operation(summary = "Get content by name", description = "Get content by its title")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
-    List<ContentDTO> getContentByName(@RequestParam String title) {
-        return contentFacade.getContentByName(title);
+    List<ContentDTO> getContentByTitle(@RequestParam String title) {
+        return contentFacade.getContentByTitle(title);
     }
 
     @Operation(summary = "Get content by user", description = "Get content by users id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "Not Found"),
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/user/{id}")
     List<ContentDTO> getContentByUserId(@PathVariable Long id) {
@@ -45,6 +64,9 @@ class ContentController {
     }
 
     @Operation(summary = "Post content", description = "Post new content")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     ResponseEntity<Void> postContent(@Valid @RequestBody PostContent postContent) {
@@ -63,10 +85,15 @@ class ContentController {
     }
 
     @Operation(summary = "Delete content", description = "Delete content")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+    })
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
-    void deleteContent(@PathVariable Long id) {
+    ResponseEntity<Void> deleteContent(@PathVariable Long id) {
         contentFacade.deleteContent(id);
+        return ResponseEntity.noContent().build();
     }
 
 
