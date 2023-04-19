@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.comment</OriginalElement>
+  <nodes>
+    <node x="-33.3110431999998" y="-367.48199999999974">29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content_products</node>
+    <node x="9.688956800000199" y="-520.5379999999998">29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.comment</node>
+    <node x="-315.7713568" y="-520.5379999999998">29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content</node>
+    <node x="200.29031359999965" y="-520.5379999999998">29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.token</node>
+    <node x="-270.746" y="-757.1479999999998">29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.user</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.token" target="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.user" relationship="REFERENCES">
+      <point x="0.0" y="-89.5" />
+      <point x="178.59959999999933" y="-520.5379999999998" />
+      <point x="174.3455999999993" y="91.44599999999969" />
+    </edge>
+    <edge source="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.comment" target="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content" relationship="REFERENCES">
+      <point x="-76.30495680000018" y="7.565999999999519" />
+      <point x="10.384000000000015" y="-424.3979999999998" />
+      <point x="-181.84440000000023" y="-424.3979999999998" />
+      <point x="-181.84440000000023" y="-464.89600000000024" />
+      <point x="98.31079999999969" y="-21.85800000000046" />
+    </edge>
+    <edge source="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content" target="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.user" relationship="REFERENCES">
+      <point x="24.0665568" y="-75.17000000000013" />
+      <point x="-195.4588" y="84.95399999999984" />
+    </edge>
+    <edge source="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.comment" target="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.user" relationship="REFERENCES">
+      <point x="38.5" y="-65.5" />
+      <point x="125.1889568000002" y="-529.5679999999995" />
+      <point x="-4.513443200000097" y="-529.5679999999995" />
+      <point x="-8.767443200000116" y="86.54319999999984" />
+    </edge>
+    <edge source="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content_products" target="29f51a6f-1baa-4669-bdb1-3e86199d6faa.TABLE:cooking.content" relationship="REFERENCES">
+      <point x="0.0" y="-41.0" />
+      <point x="65.1889568000002" y="-327.1479999999998" />
+      <point x="-189.20040000000023" y="-327.1479999999998" />
+      <point x="26.07095679999975" y="81.12599999999941" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8156606851549765" showDependencies="false" x="78.06759999999952" y="-473.49700000000036" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
