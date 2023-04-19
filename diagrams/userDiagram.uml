@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.cookingchallenges.domain.user</OriginalElement>
+  <nodes>
+    <node x="-574.0620739957037" y="-647.1969157769867">com.cookingchallenges.domain.comment.CommentFacade</node>
+    <node x="-711.9305100830364" y="-456.69572953736633">com.cookingchallenges.domain.user.UserDAO</node>
+    <node x="-507.92322657176743" y="-176.63907473309587">com.cookingchallenges.domain.user.UserFacade</node>
+    <node x="-271.3143890865954" y="-417.0980308422297">com.cookingchallenges.domain.user.UserApiFacade</node>
+    <node x="-1020.3570581257417" y="-468.19572953736633">com.cookingchallenges.adapters.user.UserDAOAdapter</node>
+    <node x="-647.7516963226572" y="111.53392645314375">com.cookingchallenges.security.AuthenticationFilter</node>
+    <node x="-1041.1686476868324" y="111.53392645314375">com.cookingchallenges.security.WebSecurityConfig</node>
+    <node x="-832.5320640569395" y="-176.63907473309587">com.cookingchallenges.domain.user.UserDetailsServiceImpl</node>
+    <node x="-298.1192032958224" y="-647.1969157769867">com.cookingchallenges.domain.content.ContentFacade</node>
+    <node x="-37.17633259594106" y="-660.0717437722419">com.cookingchallenges.domain.user.User</node>
+    <node x="-1033.2388201034396" y="-694.3666903914587">com.cookingchallenges.adapters.user.UserRepository</node>
+    <node x="-84.40024718668838" y="-53.0941874258599">com.cookingchallenges.api.UserController</node>
+    <node x="260.3492427302749" y="-465.03976275207606">com.cookingchallenges.domain.user.Grade</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.cookingchallenges.domain.user.UserApiFacade" target="com.cookingchallenges.domain.user.User" relationship="CREATE">
+      <point x="68.5" y="-137.5" />
+      <point x="-65.81438908659538" y="-443.6453143534991" />
+      <point x="105.71171010868528" y="-443.6453143534991" />
+      <point x="0.0" y="82.71817319098452" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.UserApiFacade" target="com.cookingchallenges.domain.content.ContentFacade" relationship="TO_ONE">
+      <point x="-56.872325029656054" y="-133.30944246737863" />
+      <point x="-191.18671411625144" y="-482.64747330960836" />
+      <point x="-191.6192032958224" y="-482.64747330960836" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.UserApiFacade" target="com.cookingchallenges.domain.comment.CommentFacade" relationship="TO_ONE">
+      <point x="-117.66852906287079" y="-134.4786002372482" />
+      <point x="-251.98291814946617" y="-491.3469513641753" />
+      <point x="-460.0620739957037" y="-491.3469513641753" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.UserDetailsServiceImpl" target="com.cookingchallenges.domain.user.UserDAO" relationship="TO_ONE">
+      <point x="0.0" y="-38.5" />
+      <point x="-702.0320640569395" y="-279.5980308422297" />
+      <point x="-590.901652843653" y="-279.5980308422297" />
+      <point x="0.028857239383455635" y="78.00642941874275" />
+    </edge>
+    <edge source="com.cookingchallenges.adapters.user.UserDAOAdapter" target="com.cookingchallenges.domain.user.UserDAO" relationship="REALIZATION">
+      <point x="60.5" y="-82.5" />
+      <point x="-838.8570581257417" y="-377.81466192170774" />
+      <point x="-651.4305100830364" y="-377.81466192170774" />
+      <point x="-60.5" y="71.0" />
+    </edge>
+    <edge source="com.cookingchallenges.security.WebSecurityConfig" target="com.cookingchallenges.domain.user.UserDetailsServiceImpl" relationship="TO_ONE">
+      <point x="-86.75" y="-126.5" />
+      <point x="-954.4186476868324" y="85.74792408066492" />
+      <point x="-899.3570581257417" y="85.74792408066492" />
+      <point x="-899.3570581257417" y="-11.963226571767336" />
+      <point x="-757.1073902728351" y="-11.963226571767336" />
+      <point x="-55.07532621589564" y="44.09240806642947" />
+    </edge>
+    <edge source="com.cookingchallenges.api.UserController" target="com.cookingchallenges.domain.user.UserApiFacade" relationship="TO_ONE">
+      <point x="0.0" y="-93.5" />
+      <point x="82.09975281331162" y="-89.55814946619194" />
+      <point x="-134.31438908659538" y="-89.55814946619194" />
+      <point x="0.0" y="137.5" />
+    </edge>
+    <edge source="com.cookingchallenges.security.WebSecurityConfig" target="com.cookingchallenges.security.AuthenticationFilter" relationship="CREATE">
+      <point x="86.75" y="-126.5" />
+      <point x="-780.9186476868324" y="68.80937129300173" />
+      <point x="-550.0922008863579" y="68.80937129300173" />
+      <point x="-128.66897431459046" y="-65.0932384341636" />
+    </edge>
+    <edge source="com.cookingchallenges.adapters.user.UserDAOAdapter" target="com.cookingchallenges.adapters.user.UserRepository" relationship="TO_ONE">
+      <point x="-12.881761977697806" y="-83.3764650059311" />
+      <point x="0.0" y="60.0" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.UserFacade" target="com.cookingchallenges.domain.user.UserDAO" relationship="TO_ONE">
+      <point x="0.0" y="-38.5" />
+      <point x="-421.42322657176743" y="-182.2307710557527" />
+      <point x="-503.9163147653611" y="-182.2307710557527" />
+      <point x="87.01419531767533" y="72.83195729537374" />
+    </edge>
+    <edge source="com.cookingchallenges.security.AuthenticationFilter" target="com.cookingchallenges.domain.user.UserDetailsServiceImpl" relationship="TO_ONE">
+      <point x="0.0" y="-71.50000000000001" />
+      <point x="-421.42322657176743" y="34.38682325029686" />
+      <point x="-629.6691933570581" y="34.38682325029686" />
+      <point x="72.36287069988134" y="38.24661921708184" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.UserApiFacade" target="com.cookingchallenges.domain.user.UserDAO" relationship="TO_ONE">
+      <point x="-136.54789323843443" y="4.710249110320092" />
+      <point x="-380.1218564650058" y="-274.8877817319096" />
+      <point x="-380.1218564650058" y="-379.70941874258574" />
+      <point x="119.75061287402161" y="5.986310794780593" />
+    </edge>
+    <edge source="com.cookingchallenges.domain.user.User" target="com.cookingchallenges.domain.user.Grade" relationship="TO_ONE">
+      <point x="42.77592927447" y="85.28657176749721" />
+      <point x="148.48763938315528" y="-344.28545670225367" />
+      <point x="-69.46321663300336" y="17.169798339264844" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6842532467532472" showDependencies="true" x="-293.90984578885" y="-141.00000000000034" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
