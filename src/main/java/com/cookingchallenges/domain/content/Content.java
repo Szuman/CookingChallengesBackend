@@ -22,7 +22,7 @@ public class Content {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "enum ('CHALLENGE', 'RECIPE')")
     @Enumerated(EnumType.STRING)
     private Type type;
 
@@ -44,9 +44,5 @@ public class Content {
         this.products = products;
         this.description = description;
     }
-
-//    @OneToMany(targetEntity = Seat.class, mappedBy = "content", cascade = CascadeType.ALL)
-//    private List<Seat> seats;
-//
 
 }
