@@ -2,18 +2,17 @@ package com.cookingchallenges.domain.content;
 
 
 import com.cookingchallenges.domain.user.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

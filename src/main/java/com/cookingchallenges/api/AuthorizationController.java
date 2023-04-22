@@ -43,7 +43,7 @@ class AuthorizationController {
     ResponseEntity<Void> postUser(@Valid @RequestBody PostUser postUser) {
         Long UserId = userFacade.postUser(postUser);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentContextPath().path("user/{id}")
                 .buildAndExpand(UserId).toUri();
         return ResponseEntity.created(location).build();
     }

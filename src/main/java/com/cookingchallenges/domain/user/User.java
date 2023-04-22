@@ -1,6 +1,8 @@
 package com.cookingchallenges.domain.user;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,12 +10,9 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +31,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+//    @Size(max = 255, message = "Too long about field (max 255 characters)")
     @Column
     private String about;
 

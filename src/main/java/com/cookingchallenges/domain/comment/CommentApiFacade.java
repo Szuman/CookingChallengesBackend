@@ -49,7 +49,9 @@ public class CommentApiFacade {
 
     @Transactional
     public void deleteComment(Long id) {
-        commentDao.deleteById(id);
+        Comment comment = commentDao.findById(id).orElseThrow(() ->
+                new CommentNotFoundException("Comment (id=" + id + ") does not exist"));
+        commentDao.delete(comment);
     }
 
     public CommentDTO findById(Long id) {

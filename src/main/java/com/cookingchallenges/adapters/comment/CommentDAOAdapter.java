@@ -36,8 +36,8 @@ class CommentDAOAdapter implements CommentDAO {
     }
 
     @Override
-    public void deleteById(Long id) {
-        commentRepository.deleteById(id);
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
     }
 
     @Override

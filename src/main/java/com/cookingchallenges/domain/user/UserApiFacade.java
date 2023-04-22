@@ -5,7 +5,6 @@ import com.cookingchallenges.domain.content.ContentFacade;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.PostUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
-import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
 import com.cookingchallenges.domain.user.exception.UserNotFoundException;
 import com.cookingchallenges.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,6 @@ public class UserApiFacade {
     public Long postUser(PostUser postUser) {
         User user = new User(postUser.name(), postUser.email(), postUser.about());
         user.setPassword(passwordEncoder.encode(postUser.password()));
-//        user.setPassword(postUser.password());
         return userDao.save(user);
     }
 
@@ -69,11 +67,5 @@ public class UserApiFacade {
         user.setGrade(grade);
         userDao.save(user);
         return getUserById(id);
-    }
-
-    public UserWithPassDTO getUserWithPass(Long id) {
-        User user = userDao.findById(id).orElseThrow(() ->
-                new UserNotFoundException("User (id=" + id +") does not exist"));
-        return UserMapper.mapPass(user);
     }
 }

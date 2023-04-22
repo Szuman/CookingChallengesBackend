@@ -4,7 +4,6 @@ import com.cookingchallenges.domain.user.Grade;
 import com.cookingchallenges.domain.user.UserApiFacade;
 import com.cookingchallenges.domain.user.dto.EditUser;
 import com.cookingchallenges.domain.user.dto.UserDTO;
-import com.cookingchallenges.domain.user.dto.UserWithPassDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,13 +34,6 @@ class UserController {
     @GetMapping
     UserDTO getUserByName(@RequestParam String name) {
         return userFacade.getUserByName(name);
-    }
-
-    @Operation(summary = "Get user info with password", description = "Only for presentation")
-    @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping("/pass/{id}")
-    UserWithPassDTO getUserWithPass(@PathVariable Long id) {
-        return userFacade.getUserWithPass(id);
     }
 
     @Operation(summary = "Edit user", description = "Edit user by id")
