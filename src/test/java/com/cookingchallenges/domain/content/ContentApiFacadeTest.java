@@ -37,7 +37,7 @@ class ContentApiFacadeTest {
     ContentApiFacade contentApiFacade;
 
     @Test
-    void getContentById() {
+    void shouldReturnContentDTO_whenIdIsProvided() {
         //given
         Long id = 1L;
         ContentDTO expected = ContentFixtures.contentDTOWithId(id);
@@ -52,7 +52,7 @@ class ContentApiFacadeTest {
     }
 
     @Test
-    void getContentByTitle() {
+    void shouldReturnContentDTO_whenTitleIsProvided() {
         //given
         String title = "Hotcakes";
         ContentDTO contentDTO = ContentFixtures.contentDTOWithTitle(title);
@@ -69,7 +69,7 @@ class ContentApiFacadeTest {
     }
 
     @Test
-    void getContentByUserId() {
+    void shouldReturnListOfContentDTO_whenUserIdIsProvided() {
         //given
         Long userId = 1L;
         ContentDTO contentDTO = ContentFixtures.contentDTOWithUserId(userId);
@@ -88,7 +88,7 @@ class ContentApiFacadeTest {
     }
 
     @Test
-    void postContent() {
+    void shouldReturnIdOfCreatedContent_whenPostContentIsProvided() {
         //given
         Long expected = 1L;
         Long userId = 2L;
@@ -107,7 +107,7 @@ class ContentApiFacadeTest {
     }
 
     @Test
-    void editContent() {
+    void shouldEditSaveAndReturnContentDTO_whenIdIsProvided() {
         //given
         Long id = DUMMY_CONTENT_ID;
         String title = "Hotcakes";
@@ -127,7 +127,7 @@ class ContentApiFacadeTest {
     }
 
     @Test
-    void deleteContent() {
+    void shouldDeleteContent_whenIdIsProvided() {
         //given
         Long id = 1L;
         Content content = ContentFixtures.contentWithId(id);
