@@ -1,5 +1,9 @@
 package com.cookingchallenges;
 
+import com.cookingchallenges.domain.user.dto.SignupResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,16 +26,66 @@ class CookingChallengesIntegrationTests {
     @Autowired
     MockMvc mockMvc;
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aGF0dGhlZG9nZG9pbkBnbWFpbC5jb20iLCJpYXQiOjE2ODIxNjU3NjksImV4cCI6MTY4Mjc3MDU2OX0.Rj2UbEZrjYA6EJNepBx0PTJ7-6lTQkYF1UXf-3DLWN0";
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
-    void createContent() throws Exception {
+    void checkContentCreation() throws Exception {
+        createUser();
+        String token = authorize();
+        String redirectionUrl = createContent(token);
+        retrieveContent(redirectionUrl, token);
+    }
+
+    String authorize() throws Exception {
+        //given
+        String bodyJSON = """
+                {
+                    "email": "whatthedogdoin@gmail.com",
+                    "password": "W0rdpaSScom"
+                }
+                """;
+
+        //expect
+        String response = this.mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bodyJSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        return objectMapper.readValue(response, SignupResponse.class).accessToken();
+    }
+
+    private void createUser() throws Exception {
+        //given
+        String bodyJSON = """
+                {
+                    "name": "NewUser",
+                    "email": "whatthedogdoin@gmail.com",
+                    "password": "W0rdpaSScom",
+                    "about": "This is new user here"
+                }
+                """;
+
+        //expect
+        this.mockMvc.perform(post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bodyJSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(redirectedUrlPattern("http://*/user/1")); // todo: USERS
+    }
+
+    String createContent(String token) throws Exception {
         //given
         String bodyJSON = """
                 {
                     "title": "Something good pls",
                     "type": "CHALLENGE",
-                    "userId": 2,
+                    "userId": 1,
                     "products": [
                         "butter",
                         "bread",
@@ -40,17 +94,33 @@ class CookingChallengesIntegrationTests {
                     "description": "Be something good"
                 }
                 """;
+
+        //expect
+        return this.mockMvc.perform(post("/contents")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bodyJSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(redirectedUrlPattern("http://*/contents/1"))
+                .andReturn()
+                .getResponse()
+                .getRedirectedUrl();
+    }
+
+    void retrieveContent(String url, String token) throws Exception {
+        //given
         String bodyResponseJSON = """
                 {
                     "id": 1,
                     "title": "Something good pls",
                     "type": "CHALLENGE",
                     "user": {
-                        "id": 2,
-                        "name": "Oliver D",
-                        "email": "oli.ravioli@gmail.com",
-                        "rank": "PRO",
-                        "about": "Just pro on the app"
+                        "id": 1,
+                        "name": "NewUser",
+                        "email": "whatthedogdoin@gmail.com",
+                        "rank": "BEGINNER",
+                        "about": "This is new user here"
                     },
                     "description": "Be something good",
                     "products": [
@@ -62,160 +132,151 @@ class CookingChallengesIntegrationTests {
                 """;
 
         //expect
-        this.mockMvc.perform(post("/contents")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyJSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(redirectedUrlPattern("http://*/contents/1"));
-
-        //and
-        this.mockMvc.perform(get("/contents/1")
+        this.mockMvc.perform(get(url)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(bodyResponseJSON));
     }
-
-    @Test
-    void shouldThrowMethodArgumentNotValidException_whenNameIsTooShort() throws Exception {
-        //given
-        String bodyJSON = "{\n" +
-                "    \"name\": \"Lu\",\n" +
-                "    \"surname\": \"Piszczek\",\n" +
-                "    \"screeningId\": 1,\n" +
-                "    \"reservations\": [\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 4\n" +
-                "            },\n" +
-                "            \"ticketType\": \"adult\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 5\n" +
-                "            },\n" +
-                "            \"ticketType\": \"student\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
-        String bodyResponseJSON = "{\n" +
-                "    \"message\": \"Too short name value (minimum 3 characters)\",\n" +
-                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
-                "}";
-
-        //expect
-        this.mockMvc.perform(post("/bookings")
-                .characterEncoding("UTF-8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyJSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(bodyResponseJSON));
-    }
-
-    @Test
-    void shouldThrowMethodArgumentNotValidException_whenNameStartsWithLowerCase() throws Exception {
-        //given
-        String bodyJSON = "{\n" +
-                "    \"name\": \"łukasz\",\n" +
-                "    \"surname\": \"Piszczek\",\n" +
-                "    \"screeningId\": 1,\n" +
-                "    \"reservations\": [\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 4\n" +
-                "            },\n" +
-                "            \"ticketType\": \"adult\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 5\n" +
-                "            },\n" +
-                "            \"ticketType\": \"student\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
-        String bodyResponseJSON = "{\n" +
-                "    \"message\": \"Invalid pattern name value - Start with capital letter\",\n" +
-                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
-                "}";
-
-
-        //expect
-        this.mockMvc.perform(post("/bookings")
-                .characterEncoding("UTF-8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyJSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(bodyResponseJSON));
-    }
-
-    @Test
-    void shouldThrowMethodArgumentNotValidException_whenSurnameWithTwoPartsWithoutDash() throws Exception {
-        //given
-        String bodyJSON = "{\n" +
-                "    \"name\": \"Marta\",\n" +
-                "    \"surname\": \"Żmuda Trzebiatowska\",\n" +
-                "    \"screeningId\": 1,\n" +
-                "    \"reservations\": [\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 4\n" +
-                "            },\n" +
-                "            \"ticketType\": \"adult\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"seat\": {\n" +
-                "                \"row\": 1,\n" +
-                "                \"seatNumber\": 5\n" +
-                "            },\n" +
-                "            \"ticketType\": \"student\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
-        String bodyResponseJSON = "{\n" +
-                "    \"message\": \"Invalid pattern surname value - Start with capital letter and divide two parts surname with dash (-)\",\n" +
-                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
-                "}";
-        //expect
-        this.mockMvc.perform(post("/bookings")
-                .characterEncoding("UTF-8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyJSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(bodyResponseJSON));
-    }
-
-    @Test
-    void shouldThrowMethodArgumentNotValidException_whenReservationIsEmpty() throws Exception {
-        //given
-        String bodyJSON = "{\n" +
-                "    \"name\": \"Łukasz\",\n" +
-                "    \"surname\": \"Piszczek\",\n" +
-                "    \"screeningId\": 1,\n" +
-                "    \"reservations\": []\n" +
-                "}";
-        String bodyResponseJSON = "{\n" +
-                "    \"message\": \"There is no reservation\",\n" +
-                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
-                "}";
-
-        //expect
-        this.mockMvc.perform(post("/bookings")
-                .characterEncoding("UTF-8")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyJSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(bodyResponseJSON));
-    }
+//
+//    @Test
+//    void shouldThrowMethodArgumentNotValidException_whenNameIsTooShort() throws Exception {
+//        //given
+//        String bodyJSON = "{\n" +
+//                "    \"name\": \"Lu\",\n" +
+//                "    \"surname\": \"Piszczek\",\n" +
+//                "    \"screeningId\": 1,\n" +
+//                "    \"reservations\": [\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 4\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"adult\"\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 5\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"student\"\n" +
+//                "        }\n" +
+//                "    ]\n" +
+//                "}";
+//        String bodyResponseJSON = "{\n" +
+//                "    \"message\": \"Too short name value (minimum 3 characters)\",\n" +
+//                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
+//                "}";
+//
+//        //expect
+//        this.mockMvc.perform(post("/bookings")
+//                .characterEncoding("UTF-8")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(bodyJSON))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().json(bodyResponseJSON));
+//    }
+//
+//    @Test
+//    void shouldThrowMethodArgumentNotValidException_whenNameStartsWithLowerCase() throws Exception {
+//        //given
+//        String bodyJSON = "{\n" +
+//                "    \"name\": \"łukasz\",\n" +
+//                "    \"surname\": \"Piszczek\",\n" +
+//                "    \"screeningId\": 1,\n" +
+//                "    \"reservations\": [\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 4\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"adult\"\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 5\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"student\"\n" +
+//                "        }\n" +
+//                "    ]\n" +
+//                "}";
+//        String bodyResponseJSON = "{\n" +
+//                "    \"message\": \"Invalid pattern name value - Start with capital letter\",\n" +
+//                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
+//                "}";
+//
+//
+//        //expect
+//        this.mockMvc.perform(post("/bookings")
+//                .characterEncoding("UTF-8")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(bodyJSON))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().json(bodyResponseJSON));
+//    }
+//
+//    @Test
+//    void shouldThrowMethodArgumentNotValidException_whenSurnameWithTwoPartsWithoutDash() throws Exception {
+//        //given
+//        String bodyJSON = "{\n" +
+//                "    \"name\": \"Marta\",\n" +
+//                "    \"surname\": \"Żmuda Trzebiatowska\",\n" +
+//                "    \"screeningId\": 1,\n" +
+//                "    \"reservations\": [\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 4\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"adult\"\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"seat\": {\n" +
+//                "                \"row\": 1,\n" +
+//                "                \"seatNumber\": 5\n" +
+//                "            },\n" +
+//                "            \"ticketType\": \"student\"\n" +
+//                "        }\n" +
+//                "    ]\n" +
+//                "}";
+//        String bodyResponseJSON = "{\n" +
+//                "    \"message\": \"Invalid pattern surname value - Start with capital letter and divide two parts surname with dash (-)\",\n" +
+//                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
+//                "}";
+//        //expect
+//        this.mockMvc.perform(post("/bookings")
+//                .characterEncoding("UTF-8")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(bodyJSON))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().json(bodyResponseJSON));
+//    }
+//
+//    @Test
+//    void shouldThrowMethodArgumentNotValidException_whenReservationIsEmpty() throws Exception {
+//        //given
+//        String bodyJSON = "{\n" +
+//                "    \"name\": \"Łukasz\",\n" +
+//                "    \"surname\": \"Piszczek\",\n" +
+//                "    \"screeningId\": 1,\n" +
+//                "    \"reservations\": []\n" +
+//                "}";
+//        String bodyResponseJSON = "{\n" +
+//                "    \"message\": \"There is no reservation\",\n" +
+//                "    \"exception\": \"MethodArgumentNotValidException\"\n" +
+//                "}";
+//
+//        //expect
+//        this.mockMvc.perform(post("/bookings")
+//                .characterEncoding("UTF-8")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(bodyJSON))
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().json(bodyResponseJSON));
+//    }
 }

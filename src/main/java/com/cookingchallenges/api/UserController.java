@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 class UserController {
 
     private final UserApiFacade userFacade;
