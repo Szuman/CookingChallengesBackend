@@ -2,8 +2,6 @@ package com.cookingchallenges;
 
 import com.cookingchallenges.domain.user.dto.SignupResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,7 +28,7 @@ class CookingChallengesIntegrationTests {
     ObjectMapper objectMapper;
 
     @Test
-    void checkContentCreation() throws Exception {
+    void shouldReturn201_whenPost_andReturnContent_whenGet() throws Exception {
         createUser();
         String token = authorize();
         String redirectionUrl = createContent(token);
