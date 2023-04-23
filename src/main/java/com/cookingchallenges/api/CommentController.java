@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("comment")
+@RequestMapping("comments")
 class CommentController {
 
     private final CommentApiFacade commentFacade;

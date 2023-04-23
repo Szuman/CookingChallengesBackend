@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("content")
+@RequestMapping("contents")
 class ContentController {
 
     private final ContentApiFacade contentFacade;
