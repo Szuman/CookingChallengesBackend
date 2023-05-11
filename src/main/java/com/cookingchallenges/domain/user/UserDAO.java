@@ -1,9 +1,5 @@
 package com.cookingchallenges.domain.user;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
-import javax.persistence.metamodel.SingularAttribute;
-import java.io.Serializable;
 import java.util.Optional;
 
 public interface UserDAO {

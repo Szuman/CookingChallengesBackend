@@ -3,7 +3,6 @@ package com.cookingchallenges.exception;
 import com.cookingchallenges.domain.comment.exception.CommentNotFoundException;
 import com.cookingchallenges.domain.content.exception.ContentNotFoundException;
 import com.cookingchallenges.domain.user.exception.UserNotFoundException;
-import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
